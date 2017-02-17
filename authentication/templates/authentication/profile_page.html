@@ -1,0 +1,60 @@
+{%load static%}
+{%include 'brain/base.html'%}
+<link rel="stylesheet" href="{%static 'css/profile_page.css'%}">
+
+<!DOCTYPE html>
+{%load static%}
+{%include 'brain/base.html'%}
+
+<body>
+
+<div class="wrapper">
+  <div class="leaderboard zero">
+    <h1>
+      {{profile.user.username}}
+      <br><br>
+      Points : {{profile.points}}
+    </h1>
+  </div>
+  <div class="leaderboard">
+    <h1>
+      Problems Solved
+    </h1>
+    <ul>
+        {% for submission in submissions %}
+        {%for s in submission%}
+          <li>
+            <a href="{%url 'brain:level_detail' s.question.level.id%}">
+              <mark>
+                {{s.question.name}}
+              </mark>
+            </a>
+          </li>
+          {%endfor%}
+        {% endfor %}
+
+    </ul>
+
+  </div>
+
+  <div class="leaderboard leaderboard-second">
+    <h1>
+      Registered Contests
+    </h1>
+    <ul>
+      {%if contestant%}
+        {% for c in contestant %}
+          <li> 
+            <a href="{%url 'brain:contest_detail' c.contest.id%}">
+              <mark>
+                {{c.contest.name}}
+              </mark>
+            </a>
+          </li>
+        {% endfor %}
+      {%else%}
+      <li><span class="heading">NONE!</span></li>
+      {%endif%}
+    </ul>
+  </div>
+</div>

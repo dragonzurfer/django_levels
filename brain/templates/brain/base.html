@@ -1,0 +1,64 @@
+{%load static %}
+
+<html>
+<head>
+  <title>Brainstorm</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!--css and js -->
+  <link rel="stylesheet" href="{%static 'brain/css/base.css'%}">
+  <script type="text/javascript" src="{%static 'brain/js/base.js'%}"></script>
+
+  <!-- Fonts -->
+  <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Comfortaa">
+  <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Farsan">
+  <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Monoton">
+  <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Amatic SC">
+</head>
+<body>
+      <div id="nav-container">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapsed-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#Homepage">Brand</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="collapsed-navbar">
+          <ul class="nav navbar-nav">
+            <li><a class="nav_item_1" href="{%url 'brain:contest_index'%}">Contest </a><div class="underline underline_1"></div></li>
+            <li><a class="nav_item_2" href="{%url 'brain:global_rank'%}">Leaderboard</a><div class="underline underline_2"></div></li>
+            <li><a class="nav_item_3" href="#Archive">Archive</a><div class="underline underline_3"></div></li>
+            <li><a class="nav_item_4" href="#About">About</a><div class="underline underline_4"></div></li>
+          </ul>
+          
+          <ul class="nav navbar-nav navbar-right">
+            {%if not request.user.is_authenticated%}
+              <li>
+                <a class="nav_item_5" href="{% url 'auth:authorize'%}">login/register</a>
+                <div class="underline underline_5"></div>
+              </li>
+            {%else%}
+              <li>
+                <a class="nav_item_6" href="{%url 'auth:self_profile_page'%}">{{user.get_username}}</a>
+                <div class="underline underline_6"></div>
+              </li>
+              <li>
+                <a class="nav_item_7" href="{% url 'auth:logout'%}">logout</a>
+                <div class="underline underline_7"></div>
+              </li>
+            {%endif%}
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+  </div>

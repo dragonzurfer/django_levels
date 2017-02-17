@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+{%load static%}
+{%include 'brain/base.html'%}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+  <link rel="stylesheet" href="{%static 'brain/css/ranklist.css'%}">
+
+  
+
+<body>
+<canvas id='canvas'></canvas>
+<div class="leaderboard">
+  <h1>
+    <svg class="ico-cup">
+      <use xlink:href="#cup"></use>
+    </svg>
+   {{contest.name}}
+  </h1>
+  <ul >
+  {%if request.user.is_authenticated and userrank%}
+    <li>
+    <a  href="/auth/profile/{{user.get_username}}">
+      <mark>{{user.get_username}} IS RANK {{userrank}}</mark>
+      </a>
+    </li>
+    {%endif%}
+  {% with counter=True %}
+  {%with counter=mul%}
+  {%for cnt in contestants%}
+
+  <a  href="{%url 'auth:profile_page' cnt.profile.id%}">
+    <li>
+      <mark>
+         {{counter|add:forloop.counter}}--{{cnt}} 
+      </mark> 
+      <small class="contest_item">{{cnt.points}}</small>
+    </li>
+    </a>
+  {%endfor%}
+  {%endwith%}
+    {%endwith%}
+    {% if is_paginated %}
+      <div class="pagination">
+        <span class="page-links">
+          {% if page_obj.has_previous %}
+            <a href="{%url 'brain:contest_rank' contest.id%}?page={{ page_obj.previous_page_number }}">&laquo;</a>
+          {% endif %}
+          <span style="color:white;">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+          {% if page_obj.has_next %}
+            <a href="{%url 'brain:contest_rank' contest.id%}?page={{ page_obj.next_page_number }}">&raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+    {% endif %}
+  </ul>
+</div>
+</body>
+  
+</body>
+ <script type="text/javascript" src="{%static 'brain/js/contest_index.js'%}"></script>
+</html>

@@ -1,0 +1,140 @@
+<html>
+<head>
+	<title>Sortable List</title>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+	<style type="text/css">
+
+	html, body{
+		margin: 0;
+		padding: 0;
+		height: 100%;
+	}
+
+	body{
+		font-family: arial, sans-serif;
+		font-size: 1.5em;
+		background: #00c6ff;
+		background: -webkit-linear-gradient(to left, #00c6ff , #0072ff);
+		background: linear-gradient(to left, #00c6ff , #0072ff);
+		display: -webkit-flex; /*Enables flexbox properties, align-items, and justify-content*/
+		align-items: center; /*Vertically centers content*/
+		justify-content: center; /*Horizontally centers content*/
+	}
+	ul
+	{
+		list-style: none;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.module{
+		width: 320px;
+		background: white;
+		border: 1px solid silver;
+		color: silver;
+		text-align: center;
+		transition: color 0.3s, background-color 0.3s;
+		margin: 5px 0px;
+		border-radius: 7px;
+		cursor: move;
+	}
+	.module:hover{
+		background: #e1e1e1;
+		color: gray;
+	}
+	.module:active{
+		box-shadow: 0px 0px 50px gray ;
+		transform: scale(1.05);
+		-webkit-transform: scale(1.05);
+		-moz-transform: scale(1.05);
+		-o-transform: scale(1.05);
+	}
+	.container
+	{
+		margin: 0px;
+		padding: 0px;
+	}
+	form
+	{
+		display: block;
+		position: relative;
+		text-align: center;
+	}
+	input[type=submit]
+	{
+		outline: none;
+		height: 40px;
+		text-align: center;
+		width: 130px;
+		border-radius: 40px;
+		background: #fff;
+		border: none;
+		color: #4d4d4d;
+		letter-spacing: 1px;
+		font-size: 14px;
+		font-weight: bold;
+		cursor: pointer;
+		transition: all 0.25s ease;
+		margin-top: 10px;
+	}
+	input[type=submit]:hover
+	{
+		color: white;
+		background: transparent;
+		border: 1px solid white;
+	}
+	input[type=submit]:active
+	{
+		letter-spacing: 2px;
+	}
+	</style>
+</head>
+<body>
+<div>
+<ul >
+	{%if level_set%}
+	{%for lvl in level_set%}
+		<li class="module" >
+			<p>{{lvl.name}}</p>
+		</li>
+	{%endfor%}
+	{%endif%}	
+	</ul>
+</div>
+<div class="container">
+	<ul class="sortable-items">
+	{%if level_set%}
+	{%for lvl in level_set%}
+		<li class="module" id="{{forloop.counter}}">
+			<p>{{forloop.counter}}</p>
+		</li>
+	{%endfor%}
+	{%endif%}	
+	</ul>
+</div>
+<div>
+	<form method="post" action="{%url 'brain:level_order' contest_id%}">
+		{% csrf_token %}
+			<input type="hidden" id="level_order" name="level_order"/>
+			<input type="submit" name="submit" value="SUBMIT"/>
+	</form>
+</div>
+
+<script type="text/javascript">
+	// SORTABLE
+	$(function() {
+		$( ".sortable-items" ).sortable();
+
+		var result = $(".sortable-items").sortable("toArray");
+		$('#level_order').val(result);
+		
+		$( ".sortable-items" ).on( "sortbeforestop", function( event, ui ) {
+			result = $(".sortable-items").sortable("toArray");
+			$('#level_order').val(result);
+		} );
+	});
+</script>
+
+</body>
+</html>

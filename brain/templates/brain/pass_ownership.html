@@ -1,0 +1,15 @@
+{%load static%}
+{%include 'brain/base.html'%}
+{%if error%}
+    <div class="fieldWrapper">
+        {{ error }}
+    </div>
+{%endif%}
+<link rel="stylesheet" href="{% static 'brain/css/contest_index.css' %}">
+<div class="leaderboard">
+<form action="" method="post">{% csrf_token %}
+   <input style="color:black;" type="text" name="username" required>
+    <input type="submit" value="Submit" />
+</form>
+</div>
+{%include 'brain/footer.html'%}

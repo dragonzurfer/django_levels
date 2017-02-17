@@ -1,0 +1,36 @@
+{%load static%}
+{%include 'brain/base.html'%}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+ <link rel="stylesheet" href="{%static 'brain/css/level_detail.css'%}">
+
+  <canvas id='canvas'></canvas>
+  <div class="leaderboard">
+  <h1>
+    <svg class="ico-cup">
+      <use xlink:href="#cup"></use>
+    </svg>
+    {{level.name}}
+  </h1>
+  <ul>
+  {% for ques in level.question_set.all %}
+  <a href="{%url 'brain:question_detail' ques.id%}">
+        <li>
+            <mark>{{ques.name}}</mark>
+        </li>
+    </a>
+    {% endfor %}
+    <div class="paginated">
+    {%if mod%}
+    <span>
+        <a href="{%url 'brain:level_update' level.id%}">Level Update</a>
+    </span>
+    <span>
+        <a href="{%url 'brain:question_create' level.id%}">Question_create</a>
+    </span>
+    {%endif%}
+     </div>
+  </ul>
+  </div>
+
+<script type="text/javascript" src="{%static 'brain/js/level_detail.js'%}"></script>
+{%include 'brain/footer.html'%}

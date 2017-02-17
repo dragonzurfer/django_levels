@@ -1,0 +1,47 @@
+
+{%load static%}
+{%include 'brain/base.html'%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="{%static 'brain/css/contest_index.css'%}">
+<body>
+  <canvas id='canvas'></canvas>
+  <div class="leaderboard">
+  <h1>
+    <svg class="ico-cup">
+      <use xlink:href="#cup"></use>
+    </svg>
+    Moderators
+  </h1>
+  <ul>
+    {% if moderators.exists %}
+    {% for moderator in moderators %}
+    <a class="contest_item" href="{%url 'auth:profile_page' moderator.profile.id%}">
+      <li>
+        <mark>
+          {{ moderator.profile.user.username }}
+        </mark>
+        {%if moderator.isowner%}
+        <small>OWNER</small>
+        {%endif%}
+      </li>
+    </a>
+    {%endfor%}
+    {%endif%}
+    {%if mod%}
+    <span>
+        <a href="{%url 'brain:mod_create' contest_id%}">Add Moderator</a>
+    </span>
+    {%if owner%}
+    <span>
+        <a href="{%url 'brain:pass_ownership' contest_id%}">Pass Owneership</a>
+    </span>
+    <span>
+        <a href="{%url 'brain:mod_remove' contest_id%}">Remove Moderator</a>
+    </span>
+    {%endif%}
+    {%endif%}
+  </ul>
+</div>
+<script type="text/javascript" src="{%static 'brain/js/contest_index.js'%}"></script>
+</body>
+</html>

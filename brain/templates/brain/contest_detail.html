@@ -1,0 +1,98 @@
+{%load static%}
+{%include 'brain/base.html'%}
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Timeline</title>
+  <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Comfortaa">
+  <script src="http://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>
+   <link rel="stylesheet" href="{%static 'brain/css/contest_detail.css'%}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
+</head>
+
+<body>
+  <ul id="level">
+    {% for lvl in level_set %}
+    {%if contestant.level_number == lvl.number %}
+    <a  class="contest_item" href="{%url 'brain:level_detail' lvl.id%}">
+      <li id="level_on">
+        {{lvl.name }}
+        <span class="details">
+          {{lvl.points}}
+        </span>
+      </li>
+    </a>
+    {%else%}
+    {%if contestant.level_number > lvl.number or mod or showall%}
+    <a class="contest_item" href="{%url 'brain:level_detail' lvl.id%}">
+      <li  style="color:green;" id="level_ele">
+        {{lvl.name }}
+        <span class="details">
+          {{lvl.points}}
+        </span>
+      </li>
+    </a>
+    {%else%}
+    <a  class="contest_item" href="">
+      <li id="level_ele">
+        {{lvl.name }}
+        <span class="details">
+          {{lvl.points}}
+        </span>
+      </li>
+    </a>
+    {%endif%}
+    {%endif%}
+  {%endfor%}
+
+</ul>
+<div class="container">
+  <div class="grid grid-pad">
+    <div class="col-8-12">
+      <p>Points:{{contestant.points}}</p>
+      <p>Level-{{contestant.level_number}}</p>
+      {% if level_up and not mod%}
+      <p style="color:green;">CONGRATS YOU'VE LEVELED UP</p>
+      {%elif level_up%}
+      <p style="color:green;">Correct Answer</p>
+      {%endif%}
+  </div>
+</div>
+</div>
+
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<footer>
+  <p>
+
+  <a href="{%url 'brain:contest_rank' contest.id%}">Leaderboard</a>
+
+{%if mod%}
+
+  | <a href="{%url 'brain:mod_list' contest.id%}">Moderator List</a>
+
+
+  | <a href="{%url 'brain:level_order' contest.id%}">ORDER</a>
+
+
+  | <a href="{%url 'brain:level_create' contest.id%}">Create Level</a>
+
+
+  | <a href="{%url 'brain:level_delete' contest.id%}">Delete Level</a>
+
+{%if owner%}
+
+  | <a href="{%url 'brain:contest_update' contest.id%}">Update Contest</a>
+
+
+  | <a href="{%url 'brain:contest_delete' contest.id%}">Delete Contest</a>
+
+{%endif%}
+{%endif%}
+
+    </p>
+</footer>
+
+</body>
+</html>

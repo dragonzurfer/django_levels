@@ -1,0 +1,37 @@
+
+{% load static %}
+{% for field in form %}
+    <div class="fieldWrapper">
+        {{field.errors}}
+    </div>
+{% endfor %}
+{%if error%}
+    <div class="fieldWrapper">
+        {{ error }}
+    </div>
+{%endif%}
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{%static 'css/user_registration_and_login_form.css'%}" />
+<script type="text/javascript" src="{%static 'js/user_registration_and_login_form.js'%}"></script>
+
+
+<div class="login-page">
+  <div class="form">
+ <form action="" method="POST" class="register-form">     
+{% csrf_token %}
+      <input type="text" placeholder="username" name="username"/>
+      <input type="password" placeholder="password" name="password"/>
+      <input type="text" placeholder="email address" name="email"/>
+      <button type="submit">Register</button>
+      <p class="message">Already registered? <a href="#">Sign In</a></p>
+    </form>
+<form action="{%url 'auth:login'%}" method="POST" class="login-form">
+{% csrf_token %}
+      <input type="text" placeholder="username"  name="username"/>
+      <input type="password" placeholder="password" name="password"/>
+      <button type="submit" value="Login">Login</button>
+      <p class="message">Not registered? <a href="#">Create an account</a></p>
+    </form>
+  </div>
+</div>

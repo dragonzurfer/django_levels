@@ -1,0 +1,77 @@
+
+{%load static%}
+{%include 'brain/base.html'%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="{%static 'brain/css/contest_index.css'%}">
+<body>
+  <canvas id='canvas'></canvas>
+  <div class="leaderboard">
+  <h1>
+    <svg class="ico-cup">
+      <use xlink:href="#cup"></use>
+    </svg>
+    Contests
+  </h1>
+  <ul>
+    {% if contest_list %}
+    {% for contest in contest_list %}
+    <a class="contest_item" href="{%url 'brain:contest_detail' contest.id%}">
+      <li>
+        <mark>
+          {{ contest.name  }}
+          <span class="badge" id="{{ contest.name  }}"></span>
+        </mark>
+        <small>Starts at:{{ contest.start}}</small>
+        <small>Ends at:{{ contest.end}}</small>
+      </li>
+     <div class="contest_desc">
+        {{ contest.description }}
+
+      </div>
+    </a>
+    {%endfor%}
+    {%endif%}
+        {% if is_paginated %}
+      <div class="pagination">
+        <span class="page-links">
+          {% if page_obj.has_previous %}
+            <a href="{%url 'brain:contest_index'%}?page={{ page_obj.previous_page_number }}">&laquo;</a>
+          {% endif %}
+          <span style="color:white;">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+          {% if page_obj.has_next %}
+            <a href="{%url 'brain:contest_index'%}?page={{ page_obj.next_page_number }}">&raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+    {% endif %}
+
+    {%if perms.brain.add_contest%}
+      <span class="heading"><a href="{%url 'brain:contest_create' %}">Create contest</a></span>
+    {%endif%}
+  </ul>
+</div>
+<script type="text/javascript" src="{%static 'brain/js/contest_index.js'%}"></script>
+  <script>
+  $(document).ready(function() {
+    {% if contest_list %}
+      {% for contest in contest_list %}
+          $.ajax({
+            url: 'getusers/'+{{contest.id}},
+            type: 'GET',
+
+            success: function(data) {
+              console.log(data);
+              document.getElementById("{{contest.name}}").innerHTML = data['count'];
+            },
+            error: function(data) {
+              console.log(data);
+            }
+          });
+      {%endfor%}
+    {%endif%}
+  });
+  </script>
+</body>
+</html>

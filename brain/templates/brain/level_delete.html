@@ -1,0 +1,16 @@
+{%load static%}
+{%include 'brain/base.html'%}
+<link rel="stylesheet" href="{% static 'brain/css/contest_index.css' %}">
+<div class="leaderboard">
+<h1>{{ contest.contest_name }}</h1>
+
+<form action="" method="post">
+{%csrf_token%}
+{%for level in contest.level_set.all%}
+      <input type="radio" name="level" id="level{{ forloop.counter }}" value="{{ level.id }}" />
+    <label style="color:white;" for="level{{ forloop.counter }}">{{ level.name }}</label><br />
+{% endfor %}
+<input type="submit" value="Delete level" />
+</form>
+</div>
+{%include 'brain/footer.html'%}

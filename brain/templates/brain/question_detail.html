@@ -1,0 +1,270 @@
+{%load static%}
+<!DOCTYPE html>
+
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>{{question.name}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" >
+
+  <link rel="stylesheet" type="text/css" href="{%static 'brain/css/question_detail.css'%}" />
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Kaushan+Script|Roboto:100,300,400,700,800'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  <script src="{%static 'markdown-editor/markdown-it.js'%}"></script>
+  <script src="{%static 'markdown-editor/markdown-it-footnote.js'%}"></script>
+  <script src="{%static 'markdown-editor/highlight.pack.js'%}"></script>
+  <script src="{%static 'markdown-editor/codemirror/lib/codemirror.js'%}"></script>
+  <script src="{%static 'markdown-editor/codemirror/overlay.js'%}"></script>
+  <script src="{%static 'markdown-editor/codemirror/xml/xml.js'%}"></script>
+  <script src="{%static 'markdown-editor/codemirror/markdown/markdown.js'%}"></script>
+  <script src="{%static 'markdown-editor/codemirror/gfm/gfm.js'%}"></script>
+  <script src="{%static 'markdown-editor/codemirror/javascript/javascript.js'%}"></script>
+  <script src="{%static 'markdown-editor/codemirror/css/css.js'%}"></script>
+  <script src="{%static 'markdown-editor/codemirror/htmlmixed/htmlmixed.js'%}"></script>
+  <script src="{%static 'markdown-editor/codemirror/lib/util/continuelist.js'%}"></script>
+  <script src="{%static 'markdown-editor/rawinflate.js'%}"></script>
+  <script src="{%static 'markdown-editor/rawdeflate.js'%}"></script>
+  <link rel="stylesheet" href="{%static 'markdown-editor/base16-light.css' %}">
+  <link rel="stylesheet" href="{%static 'markdown-editor/codemirror/lib/codemirror.css' %}">
+  <link rel="stylesheet" href="{%static 'markdown-editor/default.css' %}">
+</head>
+
+<body>
+<link rel="stylesheet" href="https://raw.githubusercontent.com/ThisIsDallas/Simple-Grid/master/simplegrid.css">
+
+<header>
+  <h1>
+    <a href="javascript:void(0);">!
+    <span class="cursive">{{ question.name }}</span>
+    !</a>
+  </h1>
+  <a href="#menu" id="toggle"><span></span></a>
+
+</header>
+<body>
+
+<div class="container">
+  <div class="grid grid-pad">
+    <div class="col-8-12">
+      {% if error %}<span class="subheading"><strong>{{ error }}</strong></span>{% endif %}
+      <div id="in"><textarea id="code">{{question.description}}</textarea></div>
+      <div id="out"></div>
+      <div class="content">
+      <form action="{%url 'brain:question_submit' question.id%}" method="post">{% csrf_token %}
+          <textarea rows="6" cols="90" style="color:black;" type="text" name="answer" value="" required></textarea>
+          <input style="color:black;" type="submit" value="Submit" />
+      </form>
+      </div>
+    </div>
+
+    <div class="col-4-12">
+    <div class="sidebar">
+      <h2><a href="{%url 'brain:code_submit' question.id %}">let my code answer</a></h1>
+      <h3><a href="{%url 'brain:discussion' question.id %}">discussion</a></h3>
+    </div>
+    </div>
+
+  </div>
+</div> <!-- end container -->
+
+<footer>
+      <p>Author:<a href="{%url 'auth:profile_page' question.author.profile.id%}">{{question.author.profile.user.username}}</a>
+          {%if mod%}
+          |<a href="{%url 'brain:question_update' question.id%}">Update/Add Answer</a>
+          |<a href="{%url 'brain:edit_question' question.id%}">Add Description</a>
+          |<a href="{%url 'brain:question_delete' question.id%}">Delete</a>
+          |<p>
+            {{question.answer}}
+          </p>
+          {%endif%}
+    </p>
+</footer>
+<script type="text/javascript">
+  var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+  navigator.saveBlob = navigator.saveBlob || navigator.msSaveBlob || navigator.mozSaveBlob || navigator.webkitSaveBlob;
+  window.saveAs = window.saveAs || window.webkitSaveAs || window.mozSaveAs || window.msSaveAs;
+
+  // Because highlight.js is a bit awkward at times
+  var languageOverrides = {
+    js: 'javascript',
+    html: 'xml'
+  };
+
+  var md = markdownit({
+    html: true,
+    highlight: function(code, lang){
+      if(languageOverrides[lang]) lang = languageOverrides[lang];
+      if(lang && hljs.getLanguage(lang)){
+        try {
+          return hljs.highlight(lang, code).value;
+        }catch(e){}
+      }
+      return '';
+    }
+  })
+    .use(markdownitFootnote);
+
+
+  var hashto;
+
+  function update(e){
+    setOutput(e.getValue());
+
+    clearTimeout(hashto);
+    hashto = setTimeout(updateHash, 1000);
+  }
+
+  function setOutput(val){
+    val = val.replace(/<equation>((.*?\n)*?.*?)<\/equation>/ig, function(a, b){
+      return '<img src="http://latex.codecogs.com/png.latex?' + encodeURIComponent(b) + '" />';
+    });
+
+    var out = document.getElementById('out');
+    var old = out.cloneNode(true);
+    out.innerHTML = md.render(val);
+    emojify.run(out);
+
+    var allold = old.getElementsByTagName("*");
+    if (allold === undefined) return;
+
+    var allnew = out.getElementsByTagName("*");
+    if (allnew === undefined) return;
+
+    for (var i = 0, max = Math.min(allold.length, allnew.length); i < max; i++) {
+      if (!allold[i].isEqualNode(allnew[i])) {
+        out.scrollTop = allnew[i].offsetTop;
+        return;
+      }
+    }
+  }
+
+  var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+    mode: 'gfm',
+    lineNumbers: false,
+    matchBrackets: true,
+    lineWrapping: true,
+    theme: 'base16-light',
+    extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
+  });
+
+  editor.on('change', update);
+
+
+
+
+
+  document.addEventListener('drop', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+
+    var reader = new FileReader();
+    reader.onload = function(e){
+      editor.setValue(e.target.result);
+    };
+
+    reader.readAsText(e.dataTransfer.files[0]);
+  }, false);
+
+
+
+
+
+
+  function saveAsHtml() {
+    save(document.getElementById('out').innerHTML, "untitled.html");
+  }
+
+
+
+
+
+  function save(code, name){
+    var blob = new Blob([code], { type: 'text/plain' });
+    if(window.saveAs){
+      window.saveAs(blob, name);
+    }else if(navigator.saveBlob){
+      navigator.saveBlob(blob, name);
+    }else{
+      url = URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.setAttribute("href",url);
+      link.setAttribute("download",name);
+      var event = document.createEvent('MouseEvents');
+      event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+      link.dispatchEvent(event);
+    }
+  }
+
+
+
+  var menuVisible = false;
+  var menu = document.getElementById('menu');
+
+  function showMenu() {
+    menuVisible = true;
+    menu.style.display = 'block';
+  }
+
+  function hideMenu() {
+    menuVisible = false;
+    menu.style.display = 'none';
+  }
+
+
+
+
+
+  document.addEventListener('keydown', function(e){
+    if(e.keyCode == 83 && (e.ctrlKey || e.metaKey)){
+      e.shiftKey ? showMenu() : saveAsMarkdown();
+
+      e.preventDefault();
+      return false;
+    }
+
+    if(e.keyCode === 27 && menuVisible){
+      hideMenu();
+
+      e.preventDefault();
+      return false;
+    }
+  });
+
+
+
+
+  function updateHash(){
+    window.location.hash = btoa( // base64 so url-safe
+      RawDeflate.deflate( // gzip
+        unescape(encodeURIComponent( // convert to utf8
+          editor.getValue()
+        ))
+      )
+    );
+  }
+
+  if(window.location.hash){
+    var h = window.location.hash.replace(/^#/, '');
+    if(h.slice(0,5) == 'view:'){
+      setOutput(decodeURIComponent(escape(RawDeflate.inflate(atob(h.slice(5))))));
+      document.body.className = 'view';
+    }else{
+      editor.setValue(
+        decodeURIComponent(escape(
+          RawDeflate.inflate(
+            atob(
+              h
+            )
+          )
+        ))
+      );
+      update(editor);
+      editor.focus();
+    }
+  }else{
+    update(editor);
+    editor.focus();
+  }
+</script>
+</body>
+</html>

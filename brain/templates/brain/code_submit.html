@@ -1,0 +1,146 @@
+{%load static%}
+<html>
+<head>
+	<title>codemirror</title>
+
+	<!-- Load Codemirror files -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/codemirror.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/codemirror.js"></script>
+
+	<!-- Load default theme -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/theme/monokai.css">
+
+	<!-- Load default language -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/mode/javascript/javascript.js"></script>
+
+	<!-- Load addon closeBrackets -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/edit/closebrackets.js"></script>
+
+	<!-- Load addons for search -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/dialog/dialog.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/dialog/dialog.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/search/matchesonscrollbar.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/search/searchcursor.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/search/search.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/scroll/annotatescrollbar.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/search/matchesonscrollbar.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/search/jump-to-line.js"></script>
+
+	<!-- Load fullscreen addon -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/display/fullscreen.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/display/fullscreen.css">
+
+	<!-- Load active-line addon -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/selection/active-line.js"></script>
+
+	<!-- Load active-line addon -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/addon/display/placeholder.js"></script>
+
+	<!-- Load Sublime_text keyMap -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/keymap/sublime.js"></script>
+
+	<!-- Load vim keyMap -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/keymap/vim.js"></script>
+
+	<!-- Load jquery -->
+	<script src='https://code.jquery.com/jquery-3.1.1.min.js'></script>
+
+	<style>
+		.CodeMirror
+		{
+
+		}
+	</style>
+</head>
+<body>
+
+		<p>Select a theme: <select onchange="selectTheme(this)" id=select>
+	    <option>default</option>
+	    <option>3024-day</option>
+	    <option>3024-night</option>
+	    <option>abcdef</option>
+	    <option>ambiance</option>
+	    <option>base16-dark</option>
+	    <option>base16-light</option>
+	    <option>bespin</option>
+	    <option>blackboard</option>
+	    <option>cobalt</option>
+	    <option>colorforth</option>
+	    <option>dracula</option>
+	    <option>duotone-dark</option>
+	    <option>duotone-light</option>
+	    <option>eclipse</option>
+	    <option>elegant</option>
+	    <option>erlang-dark</option>
+	    <option>hopscotch</option>
+	    <option>icecoder</option>
+	    <option>isotope</option>
+	    <option>lesser-dark</option>
+	    <option>liquibyte</option>
+	    <option>material</option>
+	    <option>mbo</option>
+	    <option>mdn-like</option>
+	    <option>midnight</option>
+	    <option selected>monokai</option>
+	    <option>neat</option>
+	    <option>neo</option>
+	    <option>night</option>
+	    <option>panda-syntax</option>
+	    <option>paraiso-dark</option>
+	    <option>paraiso-light</option>
+	    <option>pastel-on-dark</option>
+	    <option>railscasts</option>
+	    <option>rubyblue</option>
+	    <option>seti</option>
+	    <option>solarized dark</option>
+	    <option>solarized light</option>
+	    <option>the-matrix</option>
+	    <option>tomorrow-night-bright</option>
+	    <option>tomorrow-night-eighties</option>
+	    <option>ttcn</option>
+	    <option>twilight</option>
+	    <option>vibrant-ink</option>
+	    <option>xq-dark</option>
+	    <option>xq-light</option>
+	    <option>yeti</option>
+	    <option>zenburn</option>
+	</select>
+	</p>
+
+
+	<p>Font size
+		<button onclick = changeFontSize(1);>+</button>
+		<button onclick = changeFontSize(-1);>-</button>
+	</p>
+
+
+	<form action="{%url 'brain:question_submit' pk%}" name="confirmationForm" method="post">
+	{%csrf_token%}
+		<p>Select a language:</p>
+		<select name="language">
+			<option value="C">C</option>
+			<option value="CPP">CPP</option>
+			<option value="CPP11">CPP11</option>
+			<option value="CLOJURE">CLOJURE</option>
+			<option value="CSHARP">CSHARP</option>
+			<option value="JAVA">JAVA</option>
+			<option value="JAVASCRIPT">JAVASCRIPT</option>
+			<option value="HASKELL">HASKELL</option>
+			<option value="PERL">PERL</option>
+			<option value="PYTHON">PYTHON</option>
+			<option value="RUBY">RUBY</option>
+		</select>
+   		<div style="width: 700px;">
+				<textarea id='code_editor' name="code" placeholder='Code goes here...'></textarea>
+			</div>
+   		<input type="submit" value="Submit" class="submitButton">
+	</form>
+
+	<button id='toggle_vim' onclick='toggleVimMode();'>Enable vim mode</button>
+	<p>Press F11 for Fullscreen</p>
+
+	<!-- Create a simple CodeMirror instance -->
+	<script type="text/javascript" src="{%static 'brain/js/submit.js'%}"></script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% load static %}
+{%include 'brain/base.html'%}
+<link rel="stylesheet" type="text/css" href="{%static 'brain/css/contest_index.css'%}" />
+<center>
+<div class="content">
+<span class="heading">Are you sure you want to register {{contest.name}}?</span>
+</div>
+<form action="" method="post">{% csrf_token %}
+
+    <input type="submit" value="Confirm" />
+</form>
+</center>
+{%include 'brain/footer.html'%}
