@@ -36,13 +36,13 @@
       <h2>
         <span class="page-links">
           {% if page_obj.has_previous %}
-            <a href="{%url 'brain:contest_index'%}?page={{ page_obj.previous_page_number }}">&laquo;</a>
+            <a href="{%url 'brain:contest_index'%}?page={{ page_obj.previous_page_number }}" id="arrow">&laquo;</a>
           {% endif %}
           <span style="color:white;">
             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
           </span>
           {% if page_obj.has_next %}
-            <a href="{%url 'brain:contest_index'%}?page={{ page_obj.next_page_number }}" style="font-size: 30px;">&raquo;</a>
+            <a href="{%url 'brain:contest_index'%}?page={{ page_obj.next_page_number }}" id="arrow">&raquo;</a>
           {% endif %}
         </span>
       </h2>

@@ -4,7 +4,7 @@
 }
 .navbar
 {
-  background-color: rgba(255, 255, 255, .7) !important;
+  background-color:#1F2739!important;
   margin: 0 0;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -12,6 +12,15 @@
   overflow: hidden;
 
 }
+.navbar-default {
+    background-color: #1F2739;
+    border-color: #1F2739;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #9a6bde;
+}
+
 .navbar-right
 {
   margin-right: 4px;
@@ -19,6 +28,7 @@
 .navbar-brand
 {
   font-size: 20px;
+  color: rgba(80, 250, 123, 1) !important;
 }
 .navbar-header
 {
@@ -58,48 +68,53 @@ span.icon-bar
   position: relative;
   width: 100%;
   height: 3px;
-  background-color: gray;
+  background-color: rgba(80, 250, 123, 1);
   bottom: -5px;
+}
+#arrow
+{
+  font-size: 30px;
+  color:#ffb86c;
 }
 .underline_1 
 {
-  background-color: #ff1a1a !important;
+  background-color: #ffb86c !important;
 }
 .nav_item_1:hover
 {
-  color: #ff1a1a !important;
+  color: #ffb86c !important;
 }
 .underline_2 
 {
-  background-color: #33d6ff !important;
+  background-color: #ff79c6 !important;
 }
 .nav_item_2:hover
 {
-  color: #33d6ff !important;
+  color:#ff79c6 !important;
 }
 .underline_3 
 {
-  background-color: #3498db !important;
+  background-color: #8be9fd !important;
 }
 .nav_item_3:hover
 {
-  color: #3498db !important;
+  color: #8be9fd !important;
 }
 .underline_4 
 {
-  background-color: #ff1a75 !important;
+  background-color: #9a6bde !important;
 }
 .nav_item_4:hover
 {
-  color: #ff1a75 !important;
+  color: #9a6bde !important;
 }
 .underline_5 
 {
-  background-color: #1abc9c !important;
+  background-color: #ff5555 !important;
 }
 .nav_item_5:hover
 {
-  color: #1abc9c !important;
+  color: #ff5555 !important;
 }
 .underline_6 
 {
