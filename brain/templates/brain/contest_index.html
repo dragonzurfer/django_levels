@@ -4,35 +4,36 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 <link rel="stylesheet" href="{%static 'brain/css/contest_index.css'%}">
 <body>
-  <canvas id='canvas'></canvas>
-  <div class="leaderboard">
-  <h1>
-    <svg class="ico-cup">
-      <use xlink:href="#cup"></use>
-    </svg>
-    Contests
-  </h1>
-  <ul>
+
+  
+<h1><span class="blue">&lt;</span>Contests<span class="blue">&gt;</span><span class="yellow">Page</span></h1>
+  <table class="container">
+  <thead>
+    <tr>
+      <th><h1>Name</h1></th>
+      <th><h1>Start time</h1></th>
+      <th><h1>End time</h1></th>
+      <th><h1>Registrations</h1></th>
+    </tr>
+  </thead>
+  <tbody>
     {% if contest_list %}
     {% for contest in contest_list %}
     <a class="contest_item" href="{%url 'brain:contest_detail' contest.id%}">
-      <li>
-        <mark>
-          {{ contest.name  }}
-          <span class="badge" id="{{ contest.name  }}"></span>
-        </mark>
-        <small>Starts at:{{ contest.start}}</small>
-        <small>Ends at:{{ contest.end}}</small>
-      </li>
-     <div class="contest_desc">
-        {{ contest.description }}
-
-      </div>
+    <tr>
+      <td>{{ contest.name  }}</td>
+      <td>{{ contest.start}}</td>
+      <td>{{ contest.end}}</td>
+      <td id={{contest.name}}></td>
+    </tr>
     </a>
     {%endfor%}
+    </tbody>
+    </table>
+    </body>
     {%endif%}
         {% if is_paginated %}
-      <div class="pagination">
+      <h2>
         <span class="page-links">
           {% if page_obj.has_previous %}
             <a href="{%url 'brain:contest_index'%}?page={{ page_obj.previous_page_number }}">&laquo;</a>
@@ -41,18 +42,16 @@
             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
           </span>
           {% if page_obj.has_next %}
-            <a href="{%url 'brain:contest_index'%}?page={{ page_obj.next_page_number }}">&raquo;</a>
+            <a href="{%url 'brain:contest_index'%}?page={{ page_obj.next_page_number }}" style="font-size: 30px;">&raquo;</a>
           {% endif %}
         </span>
-      </div>
+      </h2>
     {% endif %}
 
     {%if perms.brain.add_contest%}
-      <span class="heading"><a href="{%url 'brain:contest_create' %}">Create contest</a></span>
+      <h2><a href="{%url 'brain:contest_create' %}">Create contest</a></h2>
     {%endif%}
-  </ul>
-</div>
-<script type="text/javascript" src="{%static 'brain/js/contest_index.js'%}"></script>
+
   <script>
   $(document).ready(function() {
     {% if contest_list %}
@@ -73,5 +72,4 @@
     {%endif%}
   });
   </script>
-</body>
 </html>
