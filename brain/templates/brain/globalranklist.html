@@ -1,60 +1,52 @@
-<!DOCTYPE html>
 
 {%load static%}
 {%include 'brain/base.html'%}
-  <link rel="stylesheet" href="{%static 'brain/css/globalranklist.css'%}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-
-
-
-
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="{%static 'brain/css/contest_index.css'%}">
 <body>
-<canvas id='canvas'></canvas>
-<div class="leaderboard">
-  <h1>
-    <svg class="ico-cup">
-      <use xlink:href="#cup"></use>
-    </svg>
-   Leaderboard
-  </h1>
-  <ul >
+
+
+<h1><span class="blue">&lt;</span>Leaderboard<span class="blue">&gt;</span></span></h1>
+  <table class="container">
+  <thead>
+    <tr>
+      <th><h1>Username</h1></th>
+      <th><h1>Score</h1></th>
+    </tr>
+  </thead>
+  <tbody>
+
+  <tr>
   {%if request.user.is_authenticated and userrank%}
-    <li>
-      <mark>{{user.get_username}} IS RANK {{userrank}}</mark>
-    </li>
+    <td>
+      {{user.get_username}} IS RANK {{userrank}}</mark>
+    </td>
     {%endif%}
   {% with counter=mul %}
   {%for cnt in contestants%}
-  <a  href="{%url 'auth:profile_page' cnt.profile.id%}">
-    <li>
-      <mark>
-          {{counter|add:forloop.counter}}--{{cnt}}
-      </mark>
-      <small class="contest_item">{{cnt.points}}</small>
-    </li>
-    </a>
+    <tr>
+      <td><a class="contest_item" href="{%url 'auth:profile_page' cnt.profile.id%}">Rank {{counter|add:forloop.counter}}</a>  {{cnt}}</td>
+      <td class="contest_item">{{cnt.points}}</td>
+  </tr>
   {%endfor%}
   {%endwith%}
-    {% if is_paginated %}
-      <div class="pagination">
-        <span class="page-links">
-          {% if page_obj.has_previous %}
-            <a href="{%url 'brain:global_rank' %}?page={{ page_obj.previous_page_number }}">&laquo;</a>
-          {% endif %}
-          <span style="color:white;">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-          </span>
-          {% if page_obj.has_next %}
-            <a href="{%url 'brain:global_rank' %}?page={{ page_obj.next_page_number }}">&raquo;</a>
-          {% endif %}
-        </span>
-      </div>
-    {% endif %}
-  </ul>
-</div>
+</tbody>
+</table>
 </body>
 
-</body>
- <script type="text/javascript" src="{%static 'brain/js/contest_index.js'%}"></script>
+{% if is_paginated %}
+<h2>
+<span class="page-links">
+{% if page_obj.has_previous %}
+  <a href="{%url 'brain:global_rank' %}?page={{ page_obj.previous_page_number }}" id="arrow">&laquo;</a>
+{% endif %}
+<span style="color:white;">
+  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+</span>
+{% if page_obj.has_next %}
+  <a href="{%url 'brain:global_rank' %}?page={{ page_obj.next_page_number }}" id="arrow">&raquo;</a>
+{% endif %}
+</span>
+</h2>
+{% endif %}
 </html>
