@@ -3,8 +3,7 @@ body {
   min-height: 450px;
   height: 100vh;
   margin: 0;
-  background: -webkit-radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
-  background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
+  background:#1F2739;
   color: #fff;
   font-family: 'Comfortaa';
 }
@@ -15,7 +14,7 @@ body {
   margin: auto;
 }
 .form {
-    background-color: rgba(255, 255, 255, .7) !important;
+    background-color: #1F2739 !important;
   margin: 0 0;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -24,16 +23,22 @@ body {
   position: relative;  
   padding: 45px;
   text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input::-webkit-input-placeholder{
+  color:#ffb86c;
+}
+.form input::-moz-placeholder{
+  color:#ffb86c;
 }
 .form input {
   font-family: "Comfortaa";
   outline: 0;
-  background: #f2f2f2;
+  background: #2C3446;
   width: 100%;
   border: 0;
   margin: 0 0 15px;
   padding: 15px;
+  color:#4dff4d;
   box-sizing: border-box;
   font-size: 14px;
 }
@@ -41,7 +46,7 @@ body {
   font-family: "Comfortaa";
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: #9a6bde;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -52,15 +57,19 @@ body {
   cursor: pointer;
 }
 .form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
+  background: #9a6bde;
 }
 .form .message {
   margin: 15px 0 0;
   color: black;
   font-size: 12px;
 }
+.form .message  {
+  color: #8be9fd;
+  text-decoration: none;
+}
 .form .message a {
-  color: #4CAF50;
+  color: #4dff4d;
   text-decoration: none;
 }
 .form .register-form {
