@@ -149,7 +149,7 @@ class SubmissionAction(LoginRequiredMixin,UserPassesTestMixin,View):
             self.can_get_points=False
             return True
         elif self.contestant.exists():      #CHECK 5 CONTESTANT EXISTS
-            if self.contestant[0].level_number >= self.level.number and contest.startmode:
+            if self.contestant[0].level_number >= self.level.number and self.contest.startmode:
                 self.can_get_points = True
                 if levelsubmission.exists():
                     self.can_get_partial_points = True
