@@ -19,14 +19,13 @@
   <tbody>
     {% if contest_list %}
     {% for contest in contest_list %}
-    <a class="contest_item" href="{%url 'brain:contest_detail' contest.id%}">
     <tr>
-      <td>{{ contest.name  }}</td>
+      <td><a class="contest_item" href="{%url 'brain:contest_detail' contest.id%}">{{ contest.name  }} </a></td>
       <td>{{ contest.start}}</td>
       <td>{{ contest.end}}</td>
       <td id={{contest.name}}></td>
     </tr>
-    </a>
+
     {%endfor%}
     </tbody>
     </table>
