@@ -1,36 +1,28 @@
 {%load static%}
 {%include 'brain/base.html'%}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
- <link rel="stylesheet" href="{%static 'brain/css/level_detail.css'%}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="{%static 'brain/css/globalranklist.css'%}">
+<body>
 
-  <canvas id='canvas'></canvas>
-  <div class="leaderboard">
-  <h1>
-    <svg class="ico-cup">
-      <use xlink:href="#cup"></use>
-    </svg>
-    {{level.name}}
-  </h1>
-  <ul>
+
+<h1><span class="blue">&lt;</span>Contests<span class="blue">&gt;</span></span></h1>
+  <table class="container">
+  <thead>
+    <tr>
+      <th><h1>{{level.name}}</h1></th>
+    </tr>
+  </thead>
+  <tbody>
   {% for ques in level.question_set.all %}
-  <a href="{%url 'brain:question_detail' ques.id%}">
-        <li>
-            <mark>{{ques.name}}</mark>
-        </li>
-    </a>
-    {% endfor %}
-    <div class="paginated">
+        <tr>
+        <td><a href="{%url 'brain:question_detail' ques.id%}">{{ques.name}}</a></td>
+      </tr>
+  {% endfor %}
+</tbody>
+</table>
+</body>
     {%if mod%}
-    <span>
-        <a href="{%url 'brain:level_update' level.id%}">Level Update</a>
-    </span>
-    <span>
-        <a href="{%url 'brain:question_create' level.id%}">Question_create</a>
-    </span>
+        <h2><a href="{%url 'brain:level_update' level.id%}">Level Update</a></h2>
+        <h2><a href="{%url 'brain:question_create' level.id%}">Question_create</a></h2>
     {%endif%}
-     </div>
-  </ul>
-  </div>
-
-<script type="text/javascript" src="{%static 'brain/js/level_detail.js'%}"></script>
 {%include 'brain/footer.html'%}

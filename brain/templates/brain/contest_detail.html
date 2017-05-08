@@ -27,7 +27,7 @@
     {%else%}
     {%if contestant.level_number > lvl.number or mod or showall%}
     <a class="contest_item" href="{%url 'brain:level_detail' lvl.id%}">
-      <li  style="color:green;" id="level_ele">
+      <li id="level_ele">
         {{lvl.name }}
         <span class="details">
           {{lvl.points}}

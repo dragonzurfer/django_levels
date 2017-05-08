@@ -1,5 +1,5 @@
 html, body {
-background: #eee;
+background: #1f2739;
 min-width: 700px;
 }
 
@@ -21,7 +21,7 @@ position: relative;
 display: block;
 margin: 100px;
 height: 4px;
-background: #1abc9c;
+background: #4DC3FA;
 }
 #level::before,
 #level::after {
@@ -32,7 +32,7 @@ display: block;
 width: 0;
 height: 0;
 border-radius: 10px;
-border: 10px solid #1abc9c;
+border: 10px solid rgba(80, 250, 123, 1);
 }
 #level::before {
 left: -5px;
@@ -41,7 +41,7 @@ left: -5px;
 right: -10px;
 border: 10px solid transparent;
 border-right: 0;
-border-left: 20px solid #1abc9c;
+border-left: 20px solid rgba(80, 250, 123, 1);
 border-radius: 3px;
 }
 
@@ -55,7 +55,7 @@ float: left;
 width: 150px;
 transform: rotate(-45deg);
 font: bold 14px arial;
-color: #4d004d;
+color: #ff79c6;
 }
 #level_on {
 position: relative;
@@ -76,7 +76,7 @@ left: -29px;
 display: block;
 width: 6px;
 height: 6px;
-border: 4px solid #1abc9c;
+border: 4px solid rgba(80, 250, 123, 1);
 border-radius: 10px;
 background: #eee;
 }
@@ -134,7 +134,7 @@ left: 0px;
 bottom: 0px;
 height: 35px;
 width: 100%;
-background: #2F2933;
+background: #1f2739;
 
 }
 footer p {
@@ -146,7 +146,7 @@ padding: 0;
 font-size: 14px;
 }
 a {
-color: #01A2A6;
+color: #4DC3FA;
 text-decoration: none;
 }
 a:hover {
@@ -158,4 +158,9 @@ color: inherit;
 div{
 font-family: 'Comfortaa';
 text-align: center;
+}
+
+.grid
+{
+  color: #FB667A;
 }

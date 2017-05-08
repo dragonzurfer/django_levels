@@ -51,7 +51,7 @@
       <div id="out"></div>
       <div class="content">
       <form action="{%url 'brain:question_submit' question.id%}" method="post">{% csrf_token %}
-          <textarea rows="6" cols="90" style="color:black;" type="text" name="answer" value="" required></textarea>
+          <textarea rows="6" cols="70" style="color:black;" type="text" name="answer" value="" required></textarea>
           <input style="color:black;" type="submit" value="Submit" />
       </form>
       </div>
