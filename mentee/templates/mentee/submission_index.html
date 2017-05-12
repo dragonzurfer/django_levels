@@ -1,0 +1,56 @@
+
+{%load static%}
+{%include 'brain/base.html'%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="{%static 'mentee/css/index.css'%}">
+
+<body>
+
+
+<h1><span class="blue">&lt;</span>Contests<span class="blue">&gt;</span></span></h1>
+  <table class="container">
+  <thead>
+    <tr>
+      <th><h1>Mentee</h1></th>
+      <th><h1>REQ SCORE</h1></th>
+      <th><h1>IMPROV SCORE</h1></th>
+      <th><h1>TIME SCORE</h1></th>
+      <th><h1>Mentor</h1></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if submission_list %}
+    {% for sub in submission_list %}
+    <tr>
+      <td><a class="contest_item" href={{sub.url}}>{{ sub.mentee.name  }} </a></td>
+      <td>{{ sub.req_score}}</td>
+      <td>{{ sub.improv_score}}</td>
+      <td>{{ sub.time_score}}</td>
+      <td>{{ sub.mentee.mentor.user.username }}</td>
+    </tr>
+
+    {%endfor%}
+    </tbody>
+    </table>
+    </body>
+    {%endif%}
+        {% if is_paginated %}
+      <h2>
+        <span class="page-links">
+          {% if page_obj.has_previous %}
+            <a href="{%url 'mentee:submission_index'%}?page={{ page_obj.previous_page_number }}" id="arrow">&laquo;</a>
+          {% endif %}
+          <span style="color:white;">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+          {% if page_obj.has_next %}
+            <a href="{%url 'mentee:submission_index'%}?page={{ page_obj.next_page_number }}" id="arrow">&raquo;</a>
+          {% endif %}
+        </span>
+      </h2>
+    {% endif %}
+
+    {%if mentor%}
+      <h2><a href="{%url 'mentee:submission' %}">Rate Submission</a></h2>
+    {%endif%}
+</html>

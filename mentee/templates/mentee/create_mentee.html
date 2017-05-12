@@ -1,0 +1,10 @@
+{%load static%}
+{%include 'brain/base.html'%}
+<link rel="stylesheet" href="{% static 'brain/css/contest_index.css' %}">
+<form action="{%url 'mentee:create_mentee'%}" method="post">{% csrf_token %}
+    <textarea rows="10" cols="170" style=" margin-left:5em; color:black;" type="text" name="mentee_list" value="" required></textarea>
+    <input style="margin-left:50em;color:black;" type="submit" value="Submit" />
+</form>
+</div>
+
+{%include 'brain/footer.html'%}

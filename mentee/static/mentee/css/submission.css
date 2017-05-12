@@ -1,0 +1,55 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,600);
+[id*=flat-slider].ui-slider,
+[id*=flat-slider].ui-slider .ui-slider-pip .ui-slider-line {
+  background: #7e8c9f;
+}
+
+[id*=flat-slider].ui-slider .ui-slider-handle .ui-slider-tip:after {
+  border-left-color: #434d5a;
+}
+
+[id*=flat-slider].ui-slider .ui-slider-handle.ui-state-hover,
+[id*=flat-slider].ui-slider .ui-slider-handle.ui-state-focus,
+[id*=flat-slider].ui-slider .ui-slider-handle.ui-state-active {
+  border-color: white;
+}
+
+body {
+  background: #434d5a;
+  font-family: "Roboto";
+}
+
+h1 {
+  color: #7e8c9f;
+  padding: 0;
+  margin: 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: default;
+}
+
+p {
+  color: #c7cdd5;
+  text-align: center;
+  margin: 0.5em 1em;
+  font-weight: 300;
+  font-size: 1.3em;
+}
+p:nth-of-type(1) {
+  margin-top: 3em;
+}
+p:last-child {
+  font-weight: 100;
+  font-size: 1em;
+}
+p:last-child a {
+  font-weight: 300;
+}
+
+.stuff {
+  padding: 50px 50px 50px;
+  max-width: 900px;
+  margin: auto;
+}
