@@ -38,7 +38,7 @@ class ContestRegistration(LoginRequiredMixin,UserPassesTestMixin,View):
         else:
             return True
 
-
+from mentee.models import Mentor
 class ContestIndex(PaginationMixin,generic.ListView):
     template_name=template.contest_index_template
     queryset=Contest.objects.order_by('-start')
@@ -47,6 +47,9 @@ class ContestIndex(PaginationMixin,generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ContestIndex, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated and Mentor.objects.filter(user=self.request.user):
+            mentor=True
+            context['mentor']=mentor
         context['now'] = timezone.now()
         return context
 

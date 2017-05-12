@@ -50,7 +50,9 @@
     {%if perms.brain.add_contest%}
       <h2><a href="{%url 'brain:contest_create' %}">Create contest</a></h2>
     {%endif%}
-
+    {%if mentor%}
+      <h2><a href="{%url 'mentee:submission'%}">Rate Mentee</a></h2>
+    {%endif%}
   <script>
   $(document).ready(function() {
     {% if contest_list %}

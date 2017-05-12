@@ -21,6 +21,7 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^auth/',include('authentication.urls')),
     url(r'^',include('brain.urls')),
+    url(r'^rate/',include('mentee.urls')),
 ]
 handler404='brain.views.custom404'
 handler502='brain.views.custom502'
