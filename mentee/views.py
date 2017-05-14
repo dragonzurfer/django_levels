@@ -17,7 +17,41 @@ from . import template
 from . import forms
 import requests
 import json
-import bot
+import bot,elo_rating
+
+def calc_sum_for_submission(submission):
+    total_score=int(submission.req_score)+int(submission.time_score)+int(submission.improv_score)
+    return total_score
+
+def getRating(taskno=None):
+    text="None"
+    get_tasks=Task.objects.all()
+    mentee_list=Mentee.objects.all()
+    try:
+        taskno=int(taskno)
+    except:
+        return "INVALID"
+    if taskno<=0:
+        return text
+    matrix=[]
+    for task in get_tasks:
+        if taskno and task.task_number>taskno:
+            break
+        task_score_list=[]
+        for mentee in mentee_list:
+            mentee_submission_for_task=Submission.objects.filter(task=task,mentee=mentee)
+            if mentee_submission_for_task.exists():
+                sum_score=calc_sum_for_submission(mentee_submission_for_task[0])
+                task_score_list.append(sum_score)
+            else:
+                task_score_list.append(0)
+        matrix.append(task_score_list)
+    new_rating=elo_rating.elo_rating(matrix)
+    index=0
+    for mentee in mentee_list:
+        text+="\n"+str(mentee.rating)+" : "+str(mentee.name)
+        index+=1
+    return text
 
 def getMentorsMentees(mentor_name=None):
     text=""
@@ -95,7 +129,10 @@ def test(request):
             text=getSubmission(slice_msg[1])
         elif len(slice_msg)==3:
             text=getSubmission(slice_msg[1],slice_msg[2])
-        requests.post(url,data={'chat_id':chat_id,'text':text})
+    elif cmd == "/rating":
+        if len(slice_msg)==2:
+            text=getRating(slice_msg[1])
+    requests.post(url,data={'chat_id':chat_id,'text':text})
     return HttpResponse(200)
 
 chat_id=bot.group_chat_id
@@ -218,11 +255,7 @@ class CreateMentee(LoginRequiredMixin,UserPassesTestMixin,View):
         else:
             return False
 
-def calc_sum_for_submission(submission):
-    total_score=int(submission.req_score)+int(submission.time_score)+int(submission.improv_score)
-    return total_score
 
-import elo_rating
 
 class EloRating(LoginRequiredMixin,UserPassesTestMixin,View):
     recalculate=False
@@ -241,9 +274,7 @@ class EloRating(LoginRequiredMixin,UserPassesTestMixin,View):
                     else:
                         task_score_list.append(0)
                 matrix.append(task_score_list)
-            print matrix
             new_rating=elo_rating.elo_rating(matrix)
-            print new_rating
             index=0
             for mentee in mentee_list:
                 if mentee.rank!=new_rating[index]:
