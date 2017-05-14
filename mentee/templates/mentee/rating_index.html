@@ -1,0 +1,46 @@
+
+{%load static%}
+{%include 'brain/base.html'%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="{%static 'mentee/css/index.css'%}">
+
+<body>
+
+
+<h1><span class="blue">&lt;</span>Contests<span class="blue">&gt;</span></span></h1>
+  <table class="container">
+  <thead>
+    <tr>
+      <th><h1>Rating</h1></th>
+      <th><h1>Mentee</h1></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if mentee_list %}
+    {% for mentee in mentee_list %}
+    <tr>
+      <td><a>{{mentee.rank}}</a></td>
+      <td>{{ mentee.name}}</td>
+    </tr>
+
+    {%endfor%}
+    </tbody>
+    </table>
+    </body>
+    {%endif%}
+        {% if is_paginated %}
+      <h2>
+        <span class="page-links">
+          {% if page_obj.has_previous %}
+            <a href="{%url 'mentee:rating'%}?page={{ page_obj.previous_page_number }}" id="arrow">&laquo;</a>
+          {% endif %}
+          <span style="color:white;">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+          {% if page_obj.has_next %}
+            <a href="{%url 'mentee:rating'%}?page={{ page_obj.next_page_number }}" id="arrow">&raquo;</a>
+          {% endif %}
+        </span>
+      </h2>
+    {% endif %}
+</html>
