@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect,render_to_response
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponse,HttpResponseRedirect
-from .models import Mentor,Submission,Mentee
+from .models import Mentor,Submission,Mentee,Task
 from django.urls import reverse
 from django.views import generic,View
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
@@ -181,7 +181,6 @@ class CreateMentee(LoginRequiredMixin,UserPassesTestMixin,View):
                 mentor=mentees.pop(0)
             except:
                 pass
-
             registered=""
             if Mentor.objects.filter(user__username=mentor):
                 for mentee in mentees:
@@ -214,6 +213,50 @@ class CreateMentee(LoginRequiredMixin,UserPassesTestMixin,View):
             else:
                 m=Mentor(user=self.request.user)
                 m.save()
+            return True
+        else:
+            return False
+
+def calc_sum_for_submission(submission):
+    total_score=int(submission.req_score)+int(submission.time_score)+int(submission.improv_score)
+    return total_score
+
+import elo_rating
+
+class EloRating(LoginRequiredMixin,UserPassesTestMixin,View):
+    recalculate=False
+    def get(self,request):
+        if self.recalculate:
+            get_tasks=Task.objects.all()
+            mentee_list=Mentee.objects.all()
+            matrix=[]
+            for task in get_tasks:
+                task_score_list=[]
+                for mentee in mentee_list:
+                    mentee_submission_for_task=Submission.objects.filter(task=task,mentee=mentee)
+                    if mentee_submission_for_task.exists():
+                        sum_score=calc_sum_for_submission(mentee_submission_for_task[0])
+                        task_score_list.append(sum_score)
+                    else:
+                        task_score_list.append(0)
+                matrix.append(task_score_list)
+            print matrix
+            new_rating=elo_rating.elo_rating(matrix)
+            print new_rating
+            index=0
+            for mentee in mentee_list:
+                if mentee.rank!=new_rating[index]:
+                    mentee.rank=new_rating[index]
+                    mentee.save()
+                index+=1
+        return HttpResponse(200)
+
+    def get_login_url(self):
+        return u"/denied"
+
+    def test_func(self):
+        if self.request.user.is_superuser:
+            self.recalculate=True
             return True
         else:
             return False
