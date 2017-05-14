@@ -52,8 +52,9 @@
       <h2><a href="{%url 'mentee:create_mentee'%}">create Mentee</a></h2>
     {%endif%}
     {%if mentor%}
+      <h2><a href="{%url 'mentee:rating'%}">Ratings</a></h2>
       <h2><a href="{%url 'mentee:submission'%}">Rate Mentee</a></h2>
-      <h2><a href="{%url 'mentee:submission_index'%}">View Rating</a></h2>
+      <h2><a href="{%url 'mentee:submission_index'%}">View scores given</a></h2>
     {%endif%}
   <script>
   $(document).ready(function() {
