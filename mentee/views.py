@@ -24,7 +24,7 @@ def calc_sum_for_submission(submission):
     return total_score
 
 def getRating(taskno=None):
-    text="None"
+    text="Ratings"
     get_tasks=Task.objects.all()
     mentee_list=Mentee.objects.all()
     try:
@@ -49,7 +49,7 @@ def getRating(taskno=None):
     new_rating=elo_rating.elo_rating(matrix)
     index=0
     for mentee in mentee_list:
-        text+="\n"+str(mentee.rating)+" : "+str(mentee.name)
+        text+="\n"+str(new_rating[index])+" : "+str(mentee.name)
         index+=1
     return text
 
@@ -75,6 +75,7 @@ def getMentorsMentees(mentor_name=None):
             return "EMPTY"
         for mentor in mentor_list:
             mentees_of_mentor=Mentee.objects.filter(mentor=mentor)
+            text+="\n"+str(mentor.user.username)+"\n------------------\n"
             i=1
             for mentee in mentees_of_mentor:
                 text+=str(i)+" ."+str(mentee.name)+"\n"
@@ -137,6 +138,7 @@ def test(request):
 
 chat_id=bot.group_chat_id
 const=0.00008267195
+BASE_SCORE=40
 
 class Submission_view(LoginRequiredMixin,UserPassesTestMixin,View):
     template_name=template.submission
@@ -156,7 +158,9 @@ class Submission_view(LoginRequiredMixin,UserPassesTestMixin,View):
             time_score=form.cleaned_data['time_score']
             task=form.cleaned_data['task']
             url_sub=form.cleaned_data['url']
+            no_penality=form.cleaned_data['no_penality']
             url_check=url_sub[0:4]
+
             if url_check!="http":
                 return render(request,self.template_name,{'form':form})
             if Submission.objects.filter(mentee=mentee,task=task):
@@ -168,10 +172,13 @@ class Submission_view(LoginRequiredMixin,UserPassesTestMixin,View):
                         saved_sub=Submission.objects.filter(mentee=mentee,task=task)
                         seconds=(task.deadline-timezone.now()).total_seconds()
                         seconds=int(seconds)
-                        time_score=int(seconds*const)
-                        if time_score <-50:
-                            time_score=-50
-                        saved_sub.update(time_score=time_score)
+                        time_score=0
+                        if not no_penality:
+                            time_score=int(seconds*const)
+                            if time_score <-50:
+                                time_score=-50
+                        base_req_score=saved_sub[0].req_score+BASE_SCORE
+                        saved_sub.update(time_score=time_score,req_score=base_req_score)
                         text=str(self.request.user.username)+'--rated-->'+str(mentee)+':task '+str(task.task_number)+'('+str(time_score)+','+str(req_score)+','+str(improv_score)+')'+' \n  link:'+str(url_sub)
                         #r=requests.post(url,data={'chat_id':chat_id,'text':text})
                     else:

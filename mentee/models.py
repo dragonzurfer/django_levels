@@ -38,6 +38,7 @@ class Submission(models.Model):
     time_score = models.IntegerField(default=0)
     task = models.ForeignKey(Task)
     url = models.CharField(max_length=1000)
-
+    no_penality = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.mentee.name
