@@ -11,6 +11,7 @@
   <table class="container">
   <thead>
     <tr>
+      <th><h1>Task</h1></th>
       <th><h1>Mentee</h1></th>
       <th><h1>REQ SCORE</h1></th>
       <th><h1>IMPROV SCORE</h1></th>
@@ -22,7 +23,8 @@
     {% if submission_list %}
     {% for sub in submission_list %}
     <tr>
-      <td><a class="contest_item" href={{sub.url}}>{{sub.mentee.rank}}. {{ sub.mentee.name  }} </a></td>
+      <td>{{sub.task.task_number}}</td>
+      <td><a class="contest_item" href={{sub.url}}>{{ sub.mentee.name  }} </a></td>
       <td>{{ sub.req_score}}</td>
       <td>{{ sub.improv_score}}</td>
       <td>{{ sub.time_score}}</td>
