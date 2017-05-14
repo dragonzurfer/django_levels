@@ -100,6 +100,7 @@ def test(request):
 
 chat_id=bot.group_chat_id
 const=0.00008267195
+
 class Submission_view(LoginRequiredMixin,UserPassesTestMixin,View):
     template_name=template.submission
     form_class=forms.SubmissionForm
@@ -154,7 +155,7 @@ class Submission_view(LoginRequiredMixin,UserPassesTestMixin,View):
 
 class SubmissionIndex(PaginationMixin,generic.ListView):
     template_name=template.submission_index_template
-    queryset=Submission.objects.order_by('task__task_number')
+    queryset=Submission.objects.order_by('-task__task_number')
     context_object_name='submission_list'
     paginate_by =100
 
@@ -260,3 +261,14 @@ class EloRating(LoginRequiredMixin,UserPassesTestMixin,View):
             return True
         else:
             return False
+
+class Rating(PaginationMixin,generic.ListView):
+    template_name=template.rating_index_template
+    queryset=Mentee.objects.order_by('-rank')
+    context_object_name='mentee_list'
+    paginate_by =100
+
+    def get_context_data(self, **kwargs):
+        context = super(Rating, self).get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
