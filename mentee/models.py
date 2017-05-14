@@ -23,6 +23,7 @@ class Mentee(models.Model):
 
 class Task(models.Model):
     task_name = models.CharField(max_length=200)
+    deadline = models.DateTimeField(default=timezone.now)
     task_number = models.IntegerField(default=0)
 
     def __str__(self):
