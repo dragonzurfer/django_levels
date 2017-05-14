@@ -22,7 +22,7 @@
     {% if submission_list %}
     {% for sub in submission_list %}
     <tr>
-      <td><a class="contest_item" href={{sub.url}}>{{ sub.mentee.name  }} </a></td>
+      <td><a class="contest_item" href={{sub.url}}>{{sub.mentee.rank}}. {{ sub.mentee.name  }} </a></td>
       <td>{{ sub.req_score}}</td>
       <td>{{ sub.improv_score}}</td>
       <td>{{ sub.time_score}}</td>
